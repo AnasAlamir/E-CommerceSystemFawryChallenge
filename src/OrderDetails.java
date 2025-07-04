@@ -1,9 +1,11 @@
 public class OrderDetails{
+    private Product product;
+    private int quantity;
+
     public OrderDetails(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
-
     public Product getProduct() {
         return product;
     }
@@ -19,7 +21,4 @@ public class OrderDetails{
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    private Product product;
-    private int quantity;
 }

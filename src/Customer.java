@@ -8,11 +8,7 @@ public class Customer {
         this.cart = cart;
     }
     public void addPoductToCart(Product product, int quantity){
-        try {
-            cart.add(product, quantity);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        cart.add(product, quantity);
     }
 
     public double getBalance() {

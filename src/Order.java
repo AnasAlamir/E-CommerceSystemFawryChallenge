@@ -6,8 +6,8 @@ public class Order {
         this.customer = customer;
         this.cart = cart;
     }
-    void checkout(){
-        if(cart.getProducts().isEmpty())
+    void checkout() throws RuntimeException {
+        if(cart.getOrderDetailsList().isEmpty())
             throw new RuntimeException("Cart is empty.");
         if(!(customer.getBalance() >= getPaidAmount()))
             throw new RuntimeException("Customer's balance is insufficient.");
@@ -16,48 +16,51 @@ public class Order {
     }
     void printCheckoutDetails()
     {
-        System.out.println("CONSOLE OUTPUT");
         System.out.println("** Shipment notice **");
-        for(var product : cart.getProducts())
+        for(var orderDetails : cart.getOrderDetailsList())
         {
-            if(product.getProduct() instanceof ShippableProduct)
-                System.out.println(product.getQuantity() + "x " + product.getProduct().getName() + "\t" + ((ShippableProduct) product.getProduct()).getWeight() + "g");
+            if(orderDetails.getProduct() instanceof ShippableProduct)
+                System.out.println(orderDetails.getQuantity() + "x " + orderDetails.getProduct().getName() + "\t\t\t" + ((ShippableProduct) orderDetails.getProduct()).getWeight() * orderDetails.getQuantity() + "g");
         }
         System.out.println("Total package weight " + totalPackageWeightInKilos() + "kg");
         System.out.println();
         System.out.println("** Checkout receipt **");
-        for(var product : cart.getProducts())
+        for(var orderDetails : cart.getOrderDetailsList())
         {
-            System.out.println(product.getQuantity() + "x" + product.getProduct().getName() + "\t" + product.getProduct().getPrice());
+            System.out.println(orderDetails.getQuantity() + "x " + orderDetails.getProduct().getName() + "\t\t\t" + orderDetails.getProduct().getPrice());
         }
         System.out.println("----------------------");
         System.out.println("Subtotal\t" + getOrderSubTotal());
         System.out.println("Shipping\t" + getShippingFees());
-        System.out.println("Amount\t" + getPaidAmount());
+        System.out.println("Amount\t" + getPaidAmount() + "$");
+        System.out.println("----------------------");
+        System.out.println("** customer current balance after payment **");
+        System.out.println("Balance\t"+ customer.getBalance() + "$");
     }
     private double totalPackageWeightInKilos() {
         double totalPackageWeight = 0;
-        for(var product : cart.getProducts())
+        for(var orderDetails : cart.getOrderDetailsList())
         {
-            totalPackageWeight += ((ShippableProduct) product.getProduct()).getWeight() * product.getQuantity();
+            if(orderDetails.getProduct() instanceof ShippableProduct)
+                totalPackageWeight += ((ShippableProduct) orderDetails.getProduct()).getWeight() * orderDetails.getQuantity();
         }
         return totalPackageWeight / 1000;
     }
 
     private double getOrderSubTotal() {
         double orderSubTotal = 0;
-        for(var product : cart.getProducts())
+        for(var orderDetails : cart.getOrderDetailsList())
         {
-            orderSubTotal += product.getQuantity() * product.getProduct().getPrice();
+            orderSubTotal += orderDetails.getQuantity() * orderDetails.getProduct().getPrice();
         }
         return orderSubTotal;
     }
     private double getShippingFees() {
         double shippingFees = 0;
-        for(var product : cart.getProducts())
+        for(var orderDetails : cart.getOrderDetailsList())
         {
-            if(product.getProduct() instanceof ShippableProduct)
-                shippingFees += ((ShippableProduct) product.getProduct()).getShippingFeesPerGram() * ((ShippableProduct) product.getProduct()).getWeight() * product.getQuantity();
+            if(orderDetails.getProduct() instanceof ShippableProduct)
+                shippingFees += ((ShippableProduct) orderDetails.getProduct()).getShippingFeesPerGram() * ((ShippableProduct) orderDetails.getProduct()).getWeight() * orderDetails.getQuantity();
         }
         return shippingFees;
     }

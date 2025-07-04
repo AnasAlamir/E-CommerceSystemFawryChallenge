@@ -2,26 +2,26 @@ import java.util.*;
 
 public class Cart
 {
-    private List<OrderDetails> productsOrderDetails;
+    private List<OrderDetails> orderDetailsList;
     public Cart() {
-        this.productsOrderDetails = new ArrayList<OrderDetails>();
+        this.orderDetailsList = new ArrayList<OrderDetails>();
     }
     boolean add(Product product, int quantity) throws RuntimeException {
-        if(product.getQuantity() >= quantity)
+        if(product.getAvailableQuantity() >= quantity)
         {
-            product.setQuantity(product.getQuantity() - quantity);
-            OrderDetails orderDetails = new OrderDetails(product, quantity);
-            productsOrderDetails.add(orderDetails);
+            product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
+            OrderDetails orderDetails =new OrderDetails(product, quantity);
+            orderDetailsList.add(orderDetails);
             return true;
         }
         throw new RuntimeException("product is out of stock or expired.");
     }
-    public List<OrderDetails> getProducts() {
-        return productsOrderDetails;
+    public List<OrderDetails> getOrderDetailsList() {
+        return orderDetailsList;
     }
 
-    public void setProductsOrderDetails(List<OrderDetails> productsOrderDetails) {
-        this.productsOrderDetails = productsOrderDetails;
+    public void setOrderDetailsList(List<OrderDetails> orderDetailsList) {
+        this.orderDetailsList = orderDetailsList;
     }
 
 }
