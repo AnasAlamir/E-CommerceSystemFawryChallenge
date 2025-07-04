@@ -1,10 +1,14 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Order {
     Customer customer;
     Cart cart;
-//    private double orderSubTotal;
+    ShippingService shippingService;
     public Order(Customer customer, Cart cart) {
         this.customer = customer;
         this.cart = cart;
+        shippingService = new ShippingService();
     }
     void checkout() throws RuntimeException {
         if(cart.getOrderDetailsList().isEmpty())
@@ -13,6 +17,19 @@ public class Order {
             throw new RuntimeException("Customer's balance is insufficient.");
         customer.setBalance(customer.getBalance() - getPaidAmount());
         printCheckoutDetails();
+        shippingService.addProductsToShippingService(getShippableProducts());
+    }
+    public List<IShippable> getShippableProducts()
+    {
+        List<IShippable> shippableList = new ArrayList<>();
+        for(var orderDetails : cart.getOrderDetailsList())
+        {
+            if(orderDetails.getProduct() instanceof ShippableProduct){
+                ProductToShip productToShip = new ProductToShip(orderDetails);
+                shippableList.add(productToShip);
+            }
+        }
+        return shippableList;
     }
     void printCheckoutDetails()
     {
