@@ -1,9 +1,21 @@
-public class Product {
+public abstract class Product {
     private String name;
     private double price;
-    private int quantity;
-    private boolean expire; //tmp as it can have date in future
 
+    public Product(String name, int quantity, double price, boolean expire) {
+        this.name = name;
+        this.expire = expire;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    private int quantity;
+    private boolean expire;
+
+    public boolean isExpired()
+    {
+        return expire;
+    }
     public int getQuantity() {
         return quantity;
     }

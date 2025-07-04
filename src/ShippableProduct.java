@@ -1,6 +1,12 @@
 public class ShippableProduct extends Product implements IShippable{
     private double weight;
-    private double shippingFees;
+    private double shippingFeesPerGram;
+
+    public ShippableProduct(String name, int quantity, double price, boolean expire,double weight, double shippingFeesPerGram) {
+        super(name, quantity, price, expire);
+        this.weight =weight;
+        this.shippingFeesPerGram = shippingFeesPerGram;
+    }
 
     @Override
     public String getName() {
@@ -14,11 +20,11 @@ public class ShippableProduct extends Product implements IShippable{
     public void setWeight(double weight) {
         this.weight = weight;
     }
-    public double getShippingFees() {
-        return shippingFees;
+    public double getShippingFeesPerGram() {
+        return shippingFeesPerGram;
     }
 
-    public void setShippingFees(double shippingFees) {
-        this.shippingFees = shippingFees;
+    public void setShippingFeesPerGram(double shippingFeesPerGram) {
+        this.shippingFeesPerGram = shippingFeesPerGram;
     }
 }
